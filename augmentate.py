@@ -17,9 +17,8 @@ for cat in category:
   for image in images:
     # Load image
     img_path = f'{cat_path}/{image}'
-
-    # Read image
     img = mpimg.imread(img_path)
+
 
     # Create lower & higher exposure image
     exposure.adjust_gamma(img, gamma=2)
