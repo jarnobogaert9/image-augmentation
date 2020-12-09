@@ -21,7 +21,6 @@ for cat in category:
 
 
     # Create lower & higher exposure image
-    exposure.adjust_gamma(img, gamma=2)
     # lower_exp = exposure.exposure.adjust_gamma(img, gamma=2)
     lower_exp = exposure.adjust_sigmoid(img, cutoff=0.5)
     higher_exp = exposure.adjust_sigmoid(img, cutoff=0.4)
