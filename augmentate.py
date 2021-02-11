@@ -8,20 +8,13 @@ def create_folder(name):
   if not os.path.exists(name):
     os.makedirs(name)
 
-def make_higer_exposure_sig(img, cutoff):
-  return exposure.adjust_sigmoid(img, cutoff=cutoff)
-
-def make_higer_exposure_gamma(img, gamma, gain=1):
-  return exposure.adjust_gamma(img, gamma=gamma)
-
-
 base_path = 'images_v2'
 
 # Path to original images that we need to augmentate
-original_cropped_images = f'./{base_path}/cropped_images_128'
+original_cropped_images = f'./{base_path}/cropped_images'
 
 # Path where all augmented images will be stored
-augmented_path = f'./{base_path}/augmented_images_128'
+augmented_path = f'./{base_path}/augmented_images'
 create_folder(augmented_path)
 
 categories = os.listdir(original_cropped_images)
@@ -49,26 +42,16 @@ for category in categories:
 
     lower_exp = exposure.adjust_sigmoid(img, cutoff=low_exp_cutoff)
     # higher_exp = exposure.adjust_sigmoid(img, cutoff=high_exp_cutoff)
-    # higher_exp = make_higer_exposure_sig(img, cutoff=high_exp_cutoff)
-    higher_exp = make_higer_exposure_gamma(img, gamma=high_exp_gamma)
+    higher_exp = exposure.adjust_gamma(img, gamma=high_exp_gamma)
 
 
     flip_y = flip(img, 1)
 
     flipped_lower_exp = exposure.adjust_sigmoid(flip_y, cutoff=low_exp_cutoff)
     # flipped_higher_exp = exposure.adjust_sigmoid(flip_y, cutoff=high_exp_cutoff)
-    # flipped_higher_exp = make_higer_exposure_sig(flip_y, cutoff=high_exp_cutoff)
-    flipped_higher_exp = make_higer_exposure_gamma(flip_y, gamma=high_exp_gamma)
+    flipped_higher_exp = exposure.adjust_gamma(flip_y, gamma=high_exp_gamma)
 
-    # print(type(img))
-    # print(type(lower_exp))
-    # print(type(higher_exp))
-    # print(type(flip_y))
-    # print(type(flipped_lower_exp))
-    # print(type(flipped_higher_exp))
     
-    # sys.exit("END")
-
     # Create folder for each version
     create_folder(f'{augmented_path}/{category}')
 
@@ -77,9 +60,8 @@ for category in categories:
     lower_exp_path = f'{augmented_path}/{category}/lower-exposure-{image}'
     higher_exp_path = f'{augmented_path}/{category}/higher-exposure-{image}'
 
-    # flip_y_path = f'{augmented_path}/{category}/flip-y-{image}'
 
-    # Mirror image over y as
+    # Put flipped image into correct folder
     if (category == 'left_ear'):
       print('this is a left ear flipped so put in right ear')
       create_folder(f'{augmented_path}/right_ear')
@@ -109,7 +91,7 @@ for category in categories:
       flipped_higer_exp_path = f'{augmented_path}/left_hand/flip-y-higer-exposure-{image}'
 
     else:
-      print('this has not to be moved to another folder')
+      print('no need to move it to another folder')
       flip_y_path = f'{augmented_path}/{category}/flip-y-{image}'
       flipped_lower_exp_path = f'{augmented_path}/{category}/flip-y-lower-exposure-{image}'
       flipped_higer_exp_path = f'{augmented_path}/{category}/flip-y-higer-exposure-{image}'
@@ -120,52 +102,7 @@ for category in categories:
     mpimg.imsave(flip_y_path, flip_y)
     mpimg.imsave(flipped_lower_exp_path, flipped_lower_exp)
     mpimg.imsave(flipped_higer_exp_path, flipped_higher_exp)
-    # break;
+    break;
 
 
 sys.exit("END")
-
-# Old version
-# # Directory with all cropped images
-# # Old one
-# # cropped_path = './images/Cropped-square'
-# # Version tibo
-# cropped_path = './images/cropped_images'
-
-# # Directory where all augmented images will be stored
-# aug_path = './images/Augmented-square'
-
-# category = os.listdir(cropped_path) # 'Geen-Gsm-gebruik' & 'Gsm-gebruik'
-
-# for cat in category:
-#   cat_path = f'{cropped_path}/{cat}'
-#   images = os.listdir(cat_path)
-  
-#   for image in images:
-#     # Load image
-#     img_path = f'{cat_path}/{image}'
-#     img = mpimg.imread(img_path)
-
-
-#     # Create lower & higher exposure image
-#     # lower_exp = exposure.exposure.adjust_gamma(img, gamma=2)
-#     lower_exp = exposure.adjust_sigmoid(img, cutoff=0.5)
-#     higher_exp = exposure.adjust_sigmoid(img, cutoff=0.4)
-#     flip_y = flip(img, 1)
-
-#     # Path for each image
-#     normal_exp_path = f'{aug_path}/{cat}/aug-normal-exposure-{image}'
-#     lower_exp_path = f'{aug_path}/{cat}/aug-lower-exposure-{image}'
-#     higher_exp_path = f'{aug_path}/{cat}/aug-higher-exposure-{image}'
-#     flip_y_path = f'{aug_path}/{cat}/aug-flip-y-{image}'
-
-#     # print(normal_exp_path)
-#     # print(lower_exp_path)
-#     # print(higher_exp_path)
-#     # print(flip_y_path)
-    
-#     mpimg.imsave(normal_exp_path, img)
-#     mpimg.imsave(lower_exp_path, lower_exp)
-#     mpimg.imsave(higher_exp_path, higher_exp)
-#     mpimg.imsave(flip_y_path, flip_y)
-#     # break
