@@ -102,7 +102,7 @@ for category in categories:
     mpimg.imsave(flip_y_path, flip_y)
     mpimg.imsave(flipped_lower_exp_path, flipped_lower_exp)
     mpimg.imsave(flipped_higer_exp_path, flipped_higher_exp)
-    break;
+    # break;
 
 
 sys.exit("END")
