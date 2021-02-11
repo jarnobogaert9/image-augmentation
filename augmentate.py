@@ -125,6 +125,7 @@ for category in categories:
 
 sys.exit("END")
 
+# Old version
 # # Directory with all cropped images
 # # Old one
 # # cropped_path = './images/Cropped-square'
